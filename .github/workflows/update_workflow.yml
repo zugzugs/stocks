@@ -1,5 +1,8 @@
 name: Regenerate Stock Fetch Workflow
 
+permissions:
+  actions: write
+
 on:
   push:
     paths:
