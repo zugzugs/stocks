@@ -1,0 +1,35 @@
+name: Regenerate Stock Fetch Workflow
+
+on:
+  push:
+    paths:
+      - cph_symbols.txt
+      - gen_workflow.py
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Run generator
+        run: python gen_workflow.py
+
+      - name: Commit and push workflow file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/fetch_stocks.yml
+          git commit -m "🔄 Auto-generate fetch_stocks.yml"
+          git push
